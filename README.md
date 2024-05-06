@@ -1,6 +1,6 @@
 # Matrix Color Generator
 
-Live Link: [Matrix Color Generator](https://your-live-link-here.com)
+Live Link: [Matrix Color Generator](https://https://colormatrix.netlify.app/)
 
 ## Description
 
