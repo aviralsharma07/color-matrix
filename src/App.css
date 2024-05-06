@@ -31,6 +31,16 @@
   color: rgba(0, 0, 0, 0.637);
 }
 
+.input-box button {
+  padding: 10px 20px;
+  border: 0;
+  outline: none;
+  background-color: rgba(73, 57, 163, 0.514);
+  color: rgba(0, 0, 0, 0.986);
+  cursor: pointer;
+  font-weight: 500;
+  border-radius: 5px;
+}
 .matrix {
   /* border: 2px solid blue; */
   /* flex: 1; */
@@ -53,4 +63,16 @@
   /* border: 1px solid green; */
   margin-bottom: 5px;
   border: 1px solid black;
+  font-weight: 700;
+  color: #fff;
+}
+
+.result {
+  /* border: 2px solid red; */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  background-color: rgb(223, 188, 223);
+  text-transform: uppercase;
 }
