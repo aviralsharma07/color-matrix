@@ -1,8 +1,13 @@
-# React + Vite
+# Matrix Color Generator
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Live Link: [Matrix Color Generator](https://your-live-link-here.com)
 
-Currently, two official plugins are available:
+## Description
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+Matrix Color Generator is a React application that generates a matrix of random colors based on the user-specified number of rows and columns. It also calculates and displays the maximum consecutive cells with the same color in both rows and columns.
+
+## Features
+
+- Generate a matrix of random colors
+- Display the maximum consecutive cells with the same color in rows and columns
+- User input for specifying the number of rows and columns
