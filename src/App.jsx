@@ -8,6 +8,8 @@ function App() {
   const [matrixGenerated, setMatrixGenerated] = useState(false);
   const [rowMax, setRowMax] = useState(0);
   const [colMax, setColMax] = useState(0);
+  const [rowMaxColor, setrowMaxColor] = useState("");
+  const [colMaxColor, setcolMaxColor] = useState("");
 
   // Object to store limited colors to be used in the matrix
   const colors = [
@@ -55,6 +57,7 @@ function App() {
         if (matrix[row][col].value === matrix[row][col + 1].value) {
           count++;
           max = Math.max(max, count);
+          setrowMaxColor(matrix[row][col].name);
         } else {
           count = 1;
         }
@@ -72,6 +75,7 @@ function App() {
         if (matrix[row][col].value === matrix[row + 1][col].value) {
           count++;
           max = Math.max(max, count);
+          setcolMaxColor(matrix[row][col].name);
         } else {
           count = 1;
         }
@@ -83,8 +87,10 @@ function App() {
 
   useEffect(() => {
     console.log(matrix);
-    setRowMax(maxConsecutiveCellsinRow(matrix));
-    setColMax(maxConsecutiveCellsinColumn(matrix));
+    if (matrix.length !== 0) {
+      setRowMax(maxConsecutiveCellsinRow(matrix));
+      setColMax(maxConsecutiveCellsinColumn(matrix));
+    }
     console.log("rowmax: ", rowMax, " colmax: ", colMax);
   }, [matrix]);
 
@@ -144,7 +150,11 @@ function App() {
           ))}
         </div>
       )}
-      {matrixGenerated && <div className="result">The maximum consecutive cells with the same color are {Math.max(rowMax, colMax)}</div>}
+      {matrixGenerated && (
+        <div className="result">
+          The maximum consecutive cells with the same color {rowMax > colMax ? rowMaxColor : colMaxColor} are {Math.max(rowMax, colMax)}
+        </div>
+      )}
     </div>
   );
 }
