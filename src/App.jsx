@@ -6,10 +6,8 @@ function App() {
   const [columns, setColumns] = useState("");
   const [matrix, setMatrix] = useState([]);
   const [matrixGenerated, setMatrixGenerated] = useState(false);
-  const [rowMax, setRowMax] = useState(0);
-  const [colMax, setColMax] = useState(0);
-  const [rowMaxColor, setrowMaxColor] = useState("");
-  const [colMaxColor, setcolMaxColor] = useState("");
+  const [max, setMax] = useState(0);
+  const [maxColor, setMaxColor] = useState("");
 
   // Object to store limited colors to be used in the matrix
   const colors = [
@@ -49,49 +47,64 @@ function App() {
     return matrix;
   };
 
-  const maxConsecutiveCellsinRow = (matrix) => {
-    let max = 0;
-    for (let row = 0; row < matrix.length; row++) {
-      let count = 1;
-      for (let col = 0; col < matrix[row].length - 1; col++) {
-        if (matrix[row][col].value === matrix[row][col + 1].value) {
-          count++;
-          max = Math.max(max, count);
-          setrowMaxColor(matrix[row][col].name);
-        } else {
-          count = 1;
-        }
-      }
-      console.log("count: ", count, " max: ", max);
-    }
-    return max;
-  };
+  function findMaxAdjacentCount(matrix) {
+    const visited = createVisitGrid(matrix);
+    let maxCount = 0;
 
-  const maxConsecutiveCellsinColumn = (matrix) => {
-    let max = 0;
-    for (let col = 0; col < matrix[0].length; col++) {
-      let count = 1;
-      for (let row = 0; row < matrix.length - 1; row++) {
-        if (matrix[row][col].value === matrix[row + 1][col].value) {
-          count++;
-          max = Math.max(max, count);
-          setcolMaxColor(matrix[row][col].name);
-        } else {
-          count = 1;
+    for (let row = 0; row < matrix.length; row++) {
+      for (let col = 0; col < matrix[row].length; col++) {
+        if (!visited[row][col]) {
+          const color = matrix[row][col];
+          maxCount = Math.max(maxCount, dfs(matrix, visited, color, row, col));
         }
       }
-      console.log("count: ", count, " max: ", max);
     }
-    return max;
-  };
+
+    return maxCount;
+  }
+
+  function dfs(matrix, visited, expected, row, col) {
+    if (row < 0 || row >= matrix.length || col < 0 || col >= matrix[row].length || visited[row][col] || matrix[row][col] !== expected) return 0;
+
+    visited[row][col] = true;
+
+    let depth = 1;
+    depth += dfs(matrix, visited, expected, row, col - 1);
+    depth += dfs(matrix, visited, expected, row, col + 1);
+    depth += dfs(matrix, visited, expected, row - 1, col);
+    depth += dfs(matrix, visited, expected, row + 1, col);
+
+    return depth;
+  }
+
+  function createVisitGrid(matrix) {
+    const visit = new Array(matrix.length).fill(false).map(() => new Array(matrix[0].length).fill(false));
+    return visit;
+  }
 
   useEffect(() => {
-    console.log(matrix);
+    // console.log(matrix);
     if (matrix.length !== 0) {
-      setRowMax(maxConsecutiveCellsinRow(matrix));
-      setColMax(maxConsecutiveCellsinColumn(matrix));
+      const maxCount = findMaxAdjacentCount(matrix);
+      setMax(maxCount);
+
+      // Find all colors corresponding to the maximum count
+      let maxColors = [];
+      for (let row = 0; row < matrix.length; row++) {
+        for (let col = 0; col < matrix[row].length; col++) {
+          const color = matrix[row][col];
+          const count = dfs(matrix, createVisitGrid(matrix), color, row, col);
+          if (count === maxCount && !maxColors.includes(color.name)) {
+            maxColors.push(color.name);
+          }
+        }
+      }
+
+      // Join multiple colors into a string for display
+      const maxColorsString = maxColors.join(", ");
+
+      setMaxColor(maxColorsString);
     }
-    console.log("rowmax: ", rowMax, " colmax: ", colMax);
   }, [matrix]);
 
   const handleGenerateMatrix = () => {
@@ -152,7 +165,7 @@ function App() {
       )}
       {matrixGenerated && (
         <div className="result">
-          The maximum consecutive cells with the same color {rowMax > colMax ? rowMaxColor : colMaxColor} are {Math.max(rowMax, colMax)}
+          The maximum consecutive cells with the same color {maxColor} are {max}
         </div>
       )}
     </div>
