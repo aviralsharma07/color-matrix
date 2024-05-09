@@ -110,6 +110,11 @@ function App() {
   const handleGenerateMatrix = () => {
     if (rows <= 0 || columns <= 0) return;
 
+    if (rows > 20 || columns > 20) {
+      alert("Please enter a value below 20 for both rows and columns.");
+      return;
+    }
+
     setMatrix(generateMatrix(rows, columns));
 
     setMatrixGenerated(true);
@@ -138,10 +143,10 @@ function App() {
             id="columnInput"
             placeholder="0"
             value={columns}
-            max="10"
+            max="21"
             onChange={(e) => {
               const value = parseInt(e.target.value);
-              setColumns(value > 10 ? 10 : value);
+              setColumns(value);
               setMatrixGenerated(false);
             }}
           ></input>
